@@ -14,6 +14,7 @@ A command-line interface application for managing your personal book collection.
 
 1. Clone the repository
 2. Install dependencies:
+
 ```bash
 pipenv install
 ```
@@ -21,11 +22,13 @@ pipenv install
 ## Usage
 
 1. Initialize the database:
+
 ```bash
 pipenv run python lib/db/seed.py
 ```
 
 2. Run the application:
+
 ```bash
 pipenv run python lib/cli.py
 ```
@@ -33,6 +36,7 @@ pipenv run python lib/cli.py
 ## Database Schema
 
 The application uses SQLAlchemy ORM with three related tables:
+
 - Genres
 - Books
 - Reviews
@@ -40,6 +44,7 @@ The application uses SQLAlchemy ORM with three related tables:
 ## Development
 
 This project uses:
+
 - Python 3.8
 - SQLAlchemy ORM
 - Pipenv for dependency management
@@ -92,7 +97,7 @@ If you're using this template, start off by removing the existing metadata for
 Github and Canvas. Run the following command to carry this out:
 
 ```console
-$ rm -rf .git .github .canvas
+rm -rf .git .github .canvas
 ```
 
 The `rm` command removes files from your computer's memory. The `-r` flag tells
@@ -145,15 +150,15 @@ Install any dependencies you know you'll need for your project, like SQLAlchemy
 and Alembic, before you begin. You can do this straight from the command line:
 
 ```console
-$ pipenv install sqlalchemy alembic
+pipenv install sqlalchemy alembic
 ```
 
 From here, you should run your second commit:
 
 ```console
-$ git add Pipfile Pipfile.lock
-$ git commit -m'add sqlalchemy and alembic to pipenv'
-$ git push
+git add Pipfile Pipfile.lock
+git commit -m'add sqlalchemy and alembic to pipenv'
+git push
 ```
 
 Now that your environment is set up, run `pipenv shell` to enter it.
