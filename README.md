@@ -1,3 +1,49 @@
+# BookBuddy CLI
+
+A command-line interface application for managing your personal book collection.
+
+## Features
+
+- Add and manage books with details like title, author, and genre
+- Track reading status (To Read, Reading, Completed)
+- Add reviews and ratings for books
+- View statistics about your book collection
+- See top-rated books
+
+## Installation
+
+1. Clone the repository
+2. Install dependencies:
+```bash
+pipenv install
+```
+
+## Usage
+
+1. Initialize the database:
+```bash
+pipenv run python lib/db/seed.py
+```
+
+2. Run the application:
+```bash
+pipenv run python lib/cli.py
+```
+
+## Database Schema
+
+The application uses SQLAlchemy ORM with three related tables:
+- Genres
+- Books
+- Reviews
+
+## Development
+
+This project uses:
+- Python 3.8
+- SQLAlchemy ORM
+- Pipenv for dependency management
+
 # Phase 3 CLI Project Template
 
 ## Learning Goals
