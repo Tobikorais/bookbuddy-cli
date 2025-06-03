@@ -1,9 +1,102 @@
 from helpers import (
     add_book, list_books, add_genre, list_genres, 
     update_book_status, delete_book, add_review,
-    get_book_statistics, get_top_rated_books
+    get_book_statistics, get_top_rated_books, get_book_details
 )
 from db.models import ReadingStatus
+
+def view_books_menu():
+    print("\n--- View Books ---")
+    print("1. View All Books")
+    print("2. View Book Details")
+    print("3. Sort Books")
+    print("4. Return to Main Menu")
+    
+    choice = input("Enter your choice: ")
+    
+    if choice == '1':
+        books = list_books()
+        if books:
+            print("\nYour Book Collection:")
+            print("-" * 50)
+            for book in books:
+                print(f"Title: {book.title}")
+                print(f"Author: {book.author}")
+                print(f"Status: {book.status.value}")
+                print(f"Genre: {book.genre.name}")
+                if book.publication_year:
+                    print(f"Year: {book.publication_year}")
+                if book.isbn:
+                    print(f"ISBN: {book.isbn}")
+                print("-" * 50)
+        else:
+            print("No books found.")
+    
+    elif choice == '2':
+        title = input("Enter book title: ")
+        books = list_books()
+        found_book = next((book for book in books if book.title.lower() == title.lower()), None)
+        if found_book:
+            details = get_book_details(found_book)
+            print("\nBook Details:")
+            print("-" * 50)
+            print(f"Title: {details['title']}")
+            print(f"Author: {details['author']}")
+            print(f"Status: {details['status']}")
+            print(f"Genre: {details['genre']}")
+            if details['publication_year']:
+                print(f"Publication Year: {details['publication_year']}")
+            if details['isbn']:
+                print(f"ISBN: {details['isbn']}")
+            print(f"Average Rating: {details['average_rating']}")
+            
+            if details['reviews']:
+                print("\nReviews:")
+                for review in details['reviews']:
+                    print(f"- Rating: {review['rating']}/5")
+                    if review['comment']:
+                        print(f"  Comment: {review['comment']}")
+                    print(f"  Date: {review['date']}")
+            print("-" * 50)
+        else:
+            print("Book not found.")
+    
+    elif choice == '3':
+        print("\nSort by:")
+        print("1. Title")
+        print("2. Author")
+        print("3. Status")
+        print("4. Genre")
+        sort_choice = input("Enter your choice: ")
+        
+        sort_options = {
+            '1': 'title',
+            '2': 'author',
+            '3': 'status',
+            '4': 'genre'
+        }
+        
+        if sort_choice in sort_options:
+            books = list_books(sort_by=sort_options[sort_choice])
+            if books:
+                print("\nSorted Books:")
+                print("-" * 50)
+                for book in books:
+                    print(f"Title: {book.title}")
+                    print(f"Author: {book.author}")
+                    print(f"Status: {book.status.value}")
+                    print(f"Genre: {book.genre.name}")
+                    print("-" * 50)
+            else:
+                print("No books found.")
+        else:
+            print("Invalid choice.")
+    
+    elif choice == '4':
+        return
+    
+    else:
+        print("Invalid choice.")
 
 def main_menu():
     while True:
@@ -44,12 +137,7 @@ def main_menu():
             except ValueError:
                 print("Invalid publication year. Please enter a valid number.")
         elif choice == '2':
-            books = list_books()
-            if books:
-                for book in books:
-                    print(f"{book.title} by {book.author} - {book.status.value} [{book.genre.name}]")
-            else:
-                print("No books found.")
+            view_books_menu()
         elif choice == '3':
             name = input("Genre Name: ")
             if name.strip():

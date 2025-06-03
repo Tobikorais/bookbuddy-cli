@@ -15,9 +15,20 @@ def list_genres():
     session.close()
     return genres
 
-def list_books():
+def list_books(sort_by='title'):
     session = get_session()
     books = session.query(Book).all()
+    
+    # Sort books based on the sort_by parameter
+    if sort_by == 'title':
+        books = sorted(books, key=lambda x: x.title.lower())
+    elif sort_by == 'author':
+        books = sorted(books, key=lambda x: x.author.lower())
+    elif sort_by == 'status':
+        books = sorted(books, key=lambda x: x.status.value)
+    elif sort_by == 'genre':
+        books = sorted(books, key=lambda x: x.genre.name.lower())
+    
     session.close()
     return books
 
@@ -117,3 +128,29 @@ def get_top_rated_books(limit=5):
     
     session.close()
     return [(book.title, book.author, round(book.avg_rating, 2)) for book in top_books]
+
+def get_book_details(book):
+    """Get detailed information about a book including its reviews."""
+    session = get_session()
+    reviews = session.query(Review).filter_by(book_id=book.id).all()
+    avg_rating = sum(review.rating for review in reviews) / len(reviews) if reviews else 0
+    
+    details = {
+        'title': book.title,
+        'author': book.author,
+        'status': book.status.value,
+        'genre': book.genre.name,
+        'publication_year': book.publication_year,
+        'isbn': book.isbn,
+        'reviews': [
+            {
+                'rating': review.rating,
+                'comment': review.comment,
+                'date': review.date_added
+            } for review in reviews
+        ],
+        'average_rating': round(avg_rating, 2) if reviews else 'No ratings'
+    }
+    
+    session.close()
+    return details
